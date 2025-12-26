@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>uavi pattern gen - jmd</title>
+  <style>
+    :root { --pad: 14px; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: #CE412E; /* page background color */
+      color: #111; /* letter color */
+    }
+    header {
+      padding: var(--pad);
+      background: white;
+      border-bottom: 1px solid #e5e5e5;
+    }
+    .row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: end;
+    }
+    label { display: grid; gap: 4px; font-size: 12px; }
+    input, select, button {
+      font: inherit;
+      padding: 8px 10px;
+      border: 1px solid #d0d0d0;
+      border-radius: 10px;
+      background: white;
+    }
+    button {
+      cursor: pointer;
+      border: 1px solid #c9c9c9;
+    }
+    button:hover { background: #fafafa; }
+    main { padding: var(--pad); }
+    .canvas-wrap {
+      background: white; /* outside box color */
+      border: 1px solid #a2a2a2;
+      border-radius: 16px;
+      padding: var(--pad);
+      overflow: auto;
+    }
+    #stage{
+        display: flex;
+        justify-content: center; 
+        align-items: center;     
+        min-height: calc(100vh - 140px); 
+    }
+    .hint { font-size: 12px; opacity: 0.8; margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="row">
+      <label>
+        n (cols)
+        <input id="cols" type="number" min="1" max="200" value="12" />
+      </label>
+      <label>
+        m (rows)
+        <input id="rows" type="number" min="1" max="200" value="8" />
+      </label>
+      <label>
+        box size (px)
+        <input id="cellSize" type="number" min="10" max="400" value="60" />
+      </label>
+      <label>
+        stroke (px)
+        <input id="strokeWidth" type="number" min="0.5" step="0.5" max="12" value="2" />
+      </label>
+      <label>
+        seed (optional)
+        <input id="seed" type="text" placeholder="ej. 123 or uavi" />
+      </label>
+      <label> 
+        pattern 
+        <select id="patternSet">
+          <option value="all" selected>mix</option>
+          <option value="lines">lines</option>
+          <option value="circles">circles</option>
+          <option value="squares">squares</option>
+          <option value="waves">waves</option>
+        </select>
+      </label>
+
+      <button id="generateBtn">generate (or press spacebar!)</button>
+      <button id="playBtn">play</button>
+      <label>
+        play interval (seconds)
+        <input id="playInterval" type="number" min="0.1" step="0.1" value="1" />
+      </label>
+      <button id="downloadBtn">download</button>
+      <button id="fullscreenBtn">fullscreen</button>
+    </div>
+    <div class="hint">
+      seeds can be used to generate the same grid again. leave empty for random seed.
+    </div>
+  </header>
+
+  <main>
+    <div class="canvas-wrap">
+      <div id="stage"></div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
