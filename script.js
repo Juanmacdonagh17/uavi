@@ -257,7 +257,7 @@ function drawWaves(g, rng, s, sw) {
   const rows = randInt(rng, 2, 5);
 
   // nicer-looking ranges
-  const amp = (0.04 + rng() * 0.08) * s;           // ~6–12% of cell size
+  const amp = (0.04 + rng() * 0.11) * s;           // ~4–15% of cell size
   const freqOptions = [1, 2, 3, 4, 5, 6, 7];                   // fewer, smoother cycles
   const freq = choice(rng, freqOptions);
 
