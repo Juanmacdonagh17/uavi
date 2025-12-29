@@ -13,6 +13,7 @@ const els = {
   cellSize: document.getElementById("cellSize"), // size of individual cell
   strokeWidth: document.getElementById("strokeWidth"), // stroke of pattenrs
   seed: document.getElementById("seed"), // seed input (optional, extra functions bellow)
+  paletteInput: document.getElementById("paletteInput"), // colour palette input
   playInterval: document.getElementById("playInterval"), // play changes ie movie
   patternSet: document.getElementById("patternSet"), // different pattern types
   playBtn: document.getElementById("playBtn"), // play/pause button movie 
@@ -75,6 +76,31 @@ function el(name, attrs = {}) {
 function clearStage() {
   els.stage.innerHTML = "";
 }
+
+
+
+// custom palette parser:
+
+function parsePalette(str, maxColors = 10) {
+  // accept commas or whitespace; normalize to #RRGGBB
+  const tokens = (str || "")
+    .split(/[\s,]+/)
+    .map(t => t.trim())
+    .filter(Boolean);
+
+  const hexOk = /^#?[0-9a-fA-F]{6}$/;
+
+  const colors = [];
+  for (const t of tokens) {
+    if (!hexOk.test(t)) continue;
+    const c = t.startsWith("#") ? t.toUpperCase() : ("#" + t.toUpperCase());
+    if (!colors.includes(c)) colors.push(c); // avoid duplicates
+    if (colors.length >= maxColors) break;
+  }
+
+  return colors;
+}
+
 // * download svg * //
 function downloadText(filename, text) {
   const blob = new Blob([text], { type: "image/svg+xml;charset=utf-8" });
@@ -135,9 +161,11 @@ function buildSvgGrid({ cols, rows, cellSize, strokeWidth, seed, patternSet }) {
 
       // I could aslo accept palletes as input 
 
-      const palette = ["#F4D94E", "#C8557F", "#438A4F", "#845B2B", "#7BADDD"]; /* paquers nacionales pallete */
+      //const palette = ["#F4D94E", "#C8557F", "#438A4F", "#845B2B", "#7BADDD"]; /* paquers nacionales pallete */
+      const userPalette = parsePalette(els.paletteInput.value, 10);
+      const palette = userPalette.length ? userPalette : ["#F4D94E", "#C8557F", "#438A4F", "#845B2B", "#7BADDD"]; // fallback
       const cellFill = choice(rng, palette);
-
+      
       g.appendChild(el("rect", {
         x: 0, y: 0, width: cellSize, height: cellSize,
         fill: cellFill, // random option!!! 
